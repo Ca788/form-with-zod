@@ -10,10 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.7.0",
+    "antd": "^5.19.0",
+    "axios": "^1.7.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.52.0",
     "styled-components": "^6.1.11",
+    "yup": "^1.4.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
