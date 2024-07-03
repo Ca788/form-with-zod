@@ -2,14 +2,11 @@ import styled from "styled-components";
 
 export const FooterContainer = styled.footer`
     background-color: black;
-    height: 50px;
-    width: 100%;
+    height: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
-    justify-items: center;
     color: aliceblue;
-    margin: 0 auto;
+    margin-top: 100px;
     padding: 20px;
-    margin-top: 40px;
-`
+`;
