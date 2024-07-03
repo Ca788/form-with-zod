@@ -16,14 +16,6 @@ import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from '@hookform/resolvers/zod'
 
-/**
- * TODO: Add form validation
- * [X] Validação / Transformação.
- * [] Fields Arrays.
- * [] Upload.
- * [] Compistation pattern.
- */
-
 const CreateUserFormSchema = z.object({
   name: z.string().min(1, 'Nome é obrigatório').transform(name => {
     return name.trim().split(' ').map(word => {
