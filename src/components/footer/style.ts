@@ -9,4 +9,5 @@ export const FooterContainer = styled.footer`
     color: aliceblue;
     margin-top: 100px;
     padding: 20px;
+    background-color:#F49817;
 `;

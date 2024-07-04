@@ -6,12 +6,10 @@ export const HeaderContainer = styled.header`
    display: flex;
    align-items: center;
    justify-content: space-between;
-   justify-items: center;
    color: aliceblue;
-   margin: 0 auto;
    padding: 20px;
-   z-index: 1000;
-   margin-bottom: 40px;
+   background-color:#F49817;
+   color: #000;
 `
 
 export const HeaderItems = styled.div`
@@ -21,5 +19,6 @@ export const HeaderItems = styled.div`
 
 export const Links = styled.a`
     text-decoration: none;
-    color: aliceblue;
+    color: #000;
+    font-weight: bold;
 `
