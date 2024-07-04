@@ -1,6 +1,6 @@
 # Formulário Simples com Validações usando Zod e React Hook Form
 
-Este é um exemplo simples de formulário que utiliza Zod para validação e React Hook Form para gerenciar o estado do formulário.
+![image](https://github.com/Ca788/form-with-zod/assets/104643507/9093e3c4-7b66-491e-8062-aca521f373d2)
 
 ## Pré-requisitos
 
@@ -18,9 +18,10 @@ Para testar ou utilizar este projeto, siga os passos abaixo:
   ```bash
 yarn install
 
-3-
+```
+3- Para iniciar o projeto, utilize o seguinte comando:
+  ```bash
+yarn dev
 
 ```
-
-![image](https://github.com/Ca788/form-with-zod/assets/104643507/9093e3c4-7b66-491e-8062-aca521f373d2)
 
