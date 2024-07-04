@@ -8,13 +8,16 @@ import {
   InputGroup,
   ContainerButtons,
   SaveButton,
-  CancelButton
+  CancelButton,
+  SpanRequired
 } from "./style";
 import { useForm } from 'react-hook-form';
-import { cpfMask } from "../../utils/masks";
+import { cpfMask, formatBirthDate } from "../../utils/masks";
 import { useState } from "react";
 import { z } from "zod";
-import { zodResolver } from '@hookform/resolvers/zod'
+import { zodResolver } from '@hookform/resolvers/zod';
+import { supabase } from "../../lib/supabase";
+import { v4 as uuidv4 } from 'uuid';
 
 const CreateUserFormSchema = z.object({
   name: z.string().min(1, 'Nome é obrigatório').transform(name => {
@@ -33,11 +36,11 @@ const CreateUserFormSchema = z.object({
   complement: z.string(),
 });
 
-type CreateUserFormData = z.infer<typeof CreateUserFormSchema>
+type CreateUserFormData = z.infer<typeof CreateUserFormSchema>;
 
 export const Form = () => {
   const [cpf, setCpf] = useState("");
-  const [output, setOutput] = useState("");
+
 
   const {
     handleSubmit,
@@ -53,10 +56,42 @@ export const Form = () => {
     setCpf(cpfMask(value));
   };
 
-  const createUser = (data: any) => {
-    setOutput(JSON.stringify(data, null, 2));
-  }
+  const formatBirthDateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.target.value = formatBirthDate(e.target.value);
+  };
 
+
+  const submit = async (data: CreateUserFormData) => {
+    try {
+
+      const userId = uuidv4();
+
+      const { error } = await supabase
+        .from('users')
+        .insert([
+          {
+            id: userId,
+            name: data.name,
+            email: data.email,
+            cpf: data.cpf,
+            birthDate: data.birthDate,
+            state: data.state,
+            city: data.city,
+            neighborhood: data.neighborhood,
+            street: data.street,
+            number: data.number,
+            complement: data.complement,
+          }
+        ]);
+
+      if (error) {
+        throw new Error('Error inserting user data into database');
+      }
+
+    } catch (error) {
+      console.error('Error creating user:', error);
+    }
+  };
 
   const clearInput = () => {
     reset({
@@ -72,7 +107,7 @@ export const Form = () => {
       complement: '',
     });
     setCpf("");
-  }
+  };
 
   return (
     <>
@@ -86,7 +121,7 @@ export const Form = () => {
                 type="text"
                 {...register("name")}
               />
-              {errors.name && <span>{errors.name.message}</span>}
+              {errors.name && <SpanRequired>{errors.name.message}</SpanRequired>}
             </InputGroup>
             <InputGroup>
               <FormLabels htmlFor="email">Email <Asterisk>*</Asterisk></FormLabels>
@@ -94,7 +129,7 @@ export const Form = () => {
                 type="email"
                 {...register("email")}
               />
-              {errors.email && <span>{errors.email.message}</span>}
+              {errors.email && <SpanRequired>{errors.email.message}</SpanRequired>}
             </InputGroup>
           </Container>
           <Container>
@@ -106,20 +141,21 @@ export const Form = () => {
                 {...register("cpf")}
                 onChange={formatCpf}
               />
-              {errors.cpf && <span>{errors.cpf.message}</span>}
+              {errors.cpf && <SpanRequired>{errors.cpf.message}</SpanRequired>}
             </InputGroup>
             <InputGroup>
               <FormLabels htmlFor="birthDate">Data de nascimento <Asterisk>*</Asterisk></FormLabels>
               <Input
-                type="date"
+                type="text"
                 {...register("birthDate")}
+                onChange={formatBirthDateInput}
               />
-              {errors.birthDate && <span>{errors.birthDate.message}</span>}
+              {errors.birthDate && <SpanRequired>{errors.birthDate.message}</SpanRequired>}
             </InputGroup>
           </Container>
           <Container>
             <InputGroup>
-              <FormLabels htmlFor="zipcode">UF</FormLabels>
+              <FormLabels htmlFor="state">UF</FormLabels>
               <Input
                 type="text"
                 {...register("state")}
@@ -168,10 +204,9 @@ export const Form = () => {
         </FormInputs>
       </FormContainer>
       <ContainerButtons>
-        <SaveButton onClick={handleSubmit(createUser)}>Salvar</SaveButton>
+        <SaveButton onClick={handleSubmit(submit)}>Salvar</SaveButton>
         <CancelButton onClick={clearInput}>Cancelar</CancelButton>
       </ContainerButtons>
-      <pre style={{ display: "flex", justifyContent: "center" }}>{output}</pre>
     </>
   );
 };

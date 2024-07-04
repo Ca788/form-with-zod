@@ -37,7 +37,7 @@ export const Input = styled.input`
 
 export const FormLabels = styled.label`
   font-size: 1rem;
-  color: #333;
+  color: #000;
 `;
 
 export const Asterisk = styled.span`
@@ -60,12 +60,14 @@ export const SaveButton = styled.button`
     align-items: center;
     border-radius: 50px;
     border-style: none;
-    background-color: #000000;
+    background-color: #000;
     color: #fff;
+    font-weight: bold;
     cursor: pointer;
 
     &:hover {
-       background-color: #24100B;
+       background-color: #3EED77;
+       color: #000
     }
 `
 
@@ -76,11 +78,17 @@ export const CancelButton = styled.button`
     align-items: center;
     border-radius: 50px;
     border-style: none;
-    background-color: #000000;
+    background-color: #000;
     color: #fff;
+    font-weight: bold;
     cursor: pointer;
 
     &:hover {
-       background-color: #24100B;
+       background-color: #3EED77;
+       color: #000
     }
+`
+
+export const SpanRequired = styled.span`
+ color: #000
 `
