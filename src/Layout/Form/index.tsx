@@ -1,3 +1,9 @@
+import { useForm } from 'react-hook-form';
+import { useState } from "react";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { supabase } from "../../lib/supabase";
+import { v4 as uuidv4 } from 'uuid';
+
 import {
   Asterisk,
   Container,
@@ -11,36 +17,12 @@ import {
   CancelButton,
   SpanRequired
 } from "./style";
-import { useForm } from 'react-hook-form';
-import { cpfMask, formatBirthDate } from "../../utils/masks";
-import { useState } from "react";
-import { z } from "zod";
-import { zodResolver } from '@hookform/resolvers/zod';
-import { supabase } from "../../lib/supabase";
-import { v4 as uuidv4 } from 'uuid';
 
-const CreateUserFormSchema = z.object({
-  name: z.string().min(1, 'Nome é obrigatório').transform(name => {
-    return name.trim().split(' ').map(word => {
-      return word[0].toLocaleUpperCase().concat(word.substring(1))
-    }).join(' ')
-  }),
-  email: z.string().min(1, 'Email é obrigatório').email('Formato de e-mail inválido'),
-  cpf: z.string().min(1, 'CPF é obrigatório'),
-  birthDate: z.string().min(1, 'Data de nascimento é obrigatório'),
-  state: z.string(),
-  city: z.string(),
-  neighborhood: z.string(),
-  street: z.string(),
-  number: z.string(),
-  complement: z.string(),
-});
-
-type CreateUserFormData = z.infer<typeof CreateUserFormSchema>;
+import { CreateUserFormData, CreateUserFormSchema } from "../../schemas/schemas";
+import { formatBirthDateInput, formatCpf } from "../../helpers/helpers";
 
 export const Form = () => {
   const [cpf, setCpf] = useState("");
-
 
   const {
     handleSubmit,
@@ -50,16 +32,6 @@ export const Form = () => {
   } = useForm<CreateUserFormData>({
     resolver: zodResolver(CreateUserFormSchema),
   });
-
-  const formatCpf = (e: any) => {
-    const value = e.target.value;
-    setCpf(cpfMask(value));
-  };
-
-  const formatBirthDateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.target.value = formatBirthDate(e.target.value);
-  };
-
 
   const submit = async (data: CreateUserFormData) => {
     try {
@@ -93,7 +65,7 @@ export const Form = () => {
     }
   };
 
-  const clearInput = () => {
+  const resetForm = () => {
     reset({
       name: '',
       email: '',
@@ -139,7 +111,7 @@ export const Form = () => {
                 type="text"
                 value={cpf}
                 {...register("cpf")}
-                onChange={formatCpf}
+                onChange={formatCpf(setCpf)}
               />
               {errors.cpf && <SpanRequired>{errors.cpf.message}</SpanRequired>}
             </InputGroup>
@@ -205,7 +177,7 @@ export const Form = () => {
       </FormContainer>
       <ContainerButtons>
         <SaveButton onClick={handleSubmit(submit)}>Salvar</SaveButton>
-        <CancelButton onClick={clearInput}>Cancelar</CancelButton>
+        <CancelButton onClick={resetForm}>Cancelar</CancelButton>
       </ContainerButtons>
     </>
   );
