@@ -7,12 +7,19 @@ export const FormContainer = styled.div`
   align-items: center;
 `;
 
+export const Title = styled.h1`
+  color: #fff;
+  font-size: 30px;
+  margin-top: 40px;
+`;
+
 export const FormInputs = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 10px;
+   margin-top: 20px;
 `;
 
 export const Container = styled.div`
@@ -28,7 +35,16 @@ export const InputGroup = styled.div`
 `;
 
 export const Input = styled.input`
-  height: 40px;
+  height: 45px;
+  width: 350px;
+  border-radius: 10px;
+  border: 1px solid gray;
+  align-items: center;
+  padding: 10px;
+`;
+
+export const InputState = styled.select`
+  height: 45px;
   width: 350px;
   border-radius: 10px;
   border: 1px solid gray;
@@ -37,7 +53,7 @@ export const Input = styled.input`
 
 export const FormLabels = styled.label`
   font-size: 1rem;
-  color: #000;
+  color: #fff;
 `;
 
 export const Asterisk = styled.span`
@@ -51,6 +67,7 @@ export const ContainerButtons = styled.div`
     gap: 20px;
     margin: 0 auto;
     margin-bottom: 20px;
+    margin-top: 10px;
 `
 
 export const SaveButton = styled.button`
@@ -60,13 +77,13 @@ export const SaveButton = styled.button`
     align-items: center;
     border-radius: 50px;
     border-style: none;
-    background-color: #000;
+    background-color: #0e7490;
     color: #fff;
     font-weight: bold;
     cursor: pointer;
 
     &:hover {
-       background-color: #3EED77;
+       background-color: #06b6d4;
        color: #000
     }
 `
@@ -78,17 +95,17 @@ export const CancelButton = styled.button`
     align-items: center;
     border-radius: 50px;
     border-style: none;
-    background-color: #000;
+    background-color:#0e7490;
     color: #fff;
     font-weight: bold;
     cursor: pointer;
 
     &:hover {
-       background-color: #3EED77;
+       background-color: #06b6d4;
        color: #000
     }
 `
 
 export const SpanRequired = styled.span`
- color: #000
+ color: #ff0000;
 `

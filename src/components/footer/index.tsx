@@ -1,9 +1,9 @@
-import { FooterContainer } from "./style"
+import { FooterContainer, FooterText } from "./style";
 
 export const Footer = () => {
   return (
     <FooterContainer>
-      <p>🗿</p>
+      <FooterText>🗿</FooterText>
     </FooterContainer>
-  )
-}
+  );
+};
