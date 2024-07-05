@@ -1,6 +1,6 @@
 # Formulário Simples com Validações usando Zod e React Hook Form
 
-![image](https://github.com/Ca788/form-with-zod/assets/104643507/3c4a0c2a-84cc-4c43-8d33-97c64153f261)
+![image](https://github.com/Ca788/form-with-zod/assets/104643507/5a4fc4f7-91b4-49aa-96c2-1228ba8bfe75)
 
 ## Pré-requisitos
 
