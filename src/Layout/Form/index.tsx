@@ -3,6 +3,8 @@ import { useState } from "react";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { supabase } from "../../lib/supabase";
 import { v4 as uuidv4 } from 'uuid';
+import { Dialog } from 'primereact/dialog';
+import { Button } from 'primereact/button';
 
 import {
   Asterisk,
@@ -15,14 +17,18 @@ import {
   ContainerButtons,
   SaveButton,
   CancelButton,
-  SpanRequired
+  SpanRequired,
+  Title,
+  InputState
 } from "./style";
 
 import { CreateUserFormData, CreateUserFormSchema } from "../../schemas/schemas";
 import { formatBirthDateInput, formatCpf } from "../../helpers/helpers";
+import { STATES_BRAZIL } from '../../utils/constants';
 
 export const Form = () => {
   const [cpf, setCpf] = useState("");
+  const [userExist, setUserExist] = useState(false);
 
   const {
     handleSubmit,
@@ -35,10 +41,24 @@ export const Form = () => {
 
   const submit = async (data: CreateUserFormData) => {
     try {
+      const { data: existingUser, error: fetchError } = await supabase
+        .from('users')
+        .select('id')
+        .eq('email', data.email)
+        .single();
+
+      if (fetchError) {
+        throw new Error('Error fetching user data from database');
+      }
+
+      if (existingUser) {
+        setUserExist(true);
+        return;
+      }
 
       const userId = uuidv4();
 
-      const { error } = await supabase
+      const { data: insertedUser, error: insertError } = await supabase
         .from('users')
         .insert([
           {
@@ -56,14 +76,21 @@ export const Form = () => {
           }
         ]);
 
-      if (error) {
-        throw new Error('Error inserting user data into database');
+      if (insertError) {
+        throw new Error(`Error inserting user data into database: ${insertError.message}`);
       }
 
-    } catch (error) {
-      console.error('Error creating user:', error);
+      if (!insertedUser) {
+        throw new Error('Inserted user data not returned from database');
+      }
+
+      resetForm();
+
+    } catch (error: any) {
+      console.error('Error creating user:', error.message);
     }
   };
+
 
   const resetForm = () => {
     reset({
@@ -85,7 +112,7 @@ export const Form = () => {
     <>
       <FormContainer>
         <FormInputs>
-          <h1>Formulário de cadastro</h1>
+          <Title>Realize seu cadastro</Title>
           <Container>
             <InputGroup>
               <FormLabels htmlFor="name">Nome <Asterisk>*</Asterisk></FormLabels>
@@ -128,10 +155,14 @@ export const Form = () => {
           <Container>
             <InputGroup>
               <FormLabels htmlFor="state">UF</FormLabels>
-              <Input
-                type="text"
-                {...register("state")}
-              />
+              <InputState {...register('state')}>
+                <option value=""></option>
+                {STATES_BRAZIL.map((state) => (
+                  <option key={state} value={state}>
+                    {state}
+                  </option>
+                ))}
+              </InputState>
             </InputGroup>
             <InputGroup>
               <FormLabels htmlFor="city">Cidade</FormLabels>
@@ -179,6 +210,16 @@ export const Form = () => {
         <SaveButton onClick={handleSubmit(submit)}>Salvar</SaveButton>
         <CancelButton onClick={resetForm}>Cancelar</CancelButton>
       </ContainerButtons>
+      <Dialog
+        header="User Exists"
+        visible={userExist}
+        style={{ backgroundColor: '#fff' }}
+        modal
+        onHide={() => setUserExist(false)}
+      >
+        <p>Usuário já cadastrado</p>
+        <Button label="Ok" onClick={() => { setUserExist(false); resetForm(); }} />
+      </Dialog>
     </>
   );
 };
