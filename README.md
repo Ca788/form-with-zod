@@ -31,9 +31,12 @@ yarn install
 yarn dev
 
 ```
-4- Esse projeto usa supabase por exemplo de armazento.
-Crie uma conta na supa base e crie um banco de dados com a seguinte query: 
+Este projeto utiliza Supabase como exemplo de armazenamento. Para configurar:
 
+Crie uma conta no Supabase e crie um banco de dados.
+
+4- Execute a seguinte query para criar a tabela users:
+  ```bash
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
@@ -48,13 +51,18 @@ CREATE TABLE users (
     complement TEXT
 );
 
-Para configurar crie um file chamado lib/supabase.ts 
+```
 
+5- Crie um arquivo lib/supabase.ts com o seguinte conteúdo:
+
+  ```bash
 import { createClient } from '@supabase/supabase-js'
 
 export const supabase =
   createClient('aqui url da supabase',
     'aqui sua secret key'
   );
+
+```
 
 
