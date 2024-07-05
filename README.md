@@ -4,6 +4,10 @@
 
 ![image](https://github.com/Ca788/form-with-zod/assets/104643507/a48c7ce3-cb69-4fde-adec-e3bb5809bbaf)
 
+![image](https://github.com/Ca788/form-with-zod/assets/104643507/c2f79fe5-49b6-440c-baaf-2cbee4861560)
+
+![image](https://github.com/Ca788/form-with-zod/assets/104643507/58be64d9-728e-4e93-9e94-eb4aaec3b3f2)
+
 
 ## Pré-requisitos
 
@@ -27,4 +31,30 @@ yarn install
 yarn dev
 
 ```
+4- Esse projeto usa supabase por exemplo de armazento.
+Crie uma conta na supa base e crie um banco de dados com a seguinte query: 
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    cpf TEXT NOT NULL,
+    birthDate DATE,
+    state TEXT,
+    city TEXT,
+    neighborhood TEXT,
+    street TEXT,
+    number TEXT,
+    complement TEXT
+);
+
+Para configurar crie um file chamado lib/supabase.ts 
+
+import { createClient } from '@supabase/supabase-js'
+
+export const supabase =
+  createClient('aqui url da supabase',
+    'aqui sua secret key'
+  );
+
 
